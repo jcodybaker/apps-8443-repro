@@ -18,33 +18,16 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -q -y \
     apt-utils \
-    nano \
-    zip \
-    unzip \
     python3-pip \
     python-setuptools \
     git \
-    libmemcached-dev \
-    libmemcached11 \
-    libmagickwand-dev \
     php8.2-fpm \
     php8.2-cli \
-    php8.2-bcmath \
     php8.2-dev \
     php8.2-common \
-    php8.2-opcache \
-    php8.2-readline \
-    php8.2-mbstring \
-    php8.2-curl \
-    php8.2-gd \
-    php8.2-imagick \
-    php8.2-mysql \
-    php8.2-zip \
-    php8.2-pgsql \
     php8.2-intl \
     php8.2-xml \
     php-pear \
-    && pecl -d php_suffix=8.2 install -o -f redis memcached \
     && mkdir -p /run/php \
     && pip install wheel \
     && pip install supervisor \
