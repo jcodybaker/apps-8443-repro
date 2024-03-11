@@ -1,7 +1,5 @@
 FROM debian:bullseye-slim
 
-ENV DEBIAN_FRONTEND noninteractive
-
 # Install Basic Requirements
 RUN set -x \
     && apt-get update \
