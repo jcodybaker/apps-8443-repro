@@ -4,8 +4,7 @@ FROM debian:bullseye-slim
 RUN set -x \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -q -y python3-pip \
-    && pip install supervisor \
-    && mkdir /tmp/super
+    && pip install supervisor 
 
 RUN touch /tmp/example
 
