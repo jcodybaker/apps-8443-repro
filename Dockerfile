@@ -50,29 +50,6 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && pip install supervisor \
     && pip install git+https://github.com/coderanger/supervisor-stdout \
     && echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
-    && sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" ${php_conf} \
-    && sed -i -e "s/memory_limit\s*=\s*.*/memory_limit = 256M/g" ${php_conf} \
-    && sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" ${php_conf} \
-    && sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" ${php_conf} \
-    && sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" ${php_conf} \
-    && sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/8.2/fpm/php-fpm.conf \
-    && sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" ${fpm_conf} \
-    && sed -i -e "s/pm.max_children = 5/pm.max_children = 4/g" ${fpm_conf} \
-    && sed -i -e "s/pm.start_servers = 2/pm.start_servers = 3/g" ${fpm_conf} \
-    && sed -i -e "s/pm.min_spare_servers = 1/pm.min_spare_servers = 2/g" ${fpm_conf} \
-    && sed -i -e "s/pm.max_spare_servers = 3/pm.max_spare_servers = 4/g" ${fpm_conf} \
-    && sed -i -e "s/pm.max_requests = 500/pm.max_requests = 200/g" ${fpm_conf} \
-    && sed -i -e "s/www-data/nginx/g" ${fpm_conf} \
-    && sed -i -e "s/^;clear_env = no$/clear_env = no/" ${fpm_conf} \
-    && echo "extension=redis.so" > /etc/php/8.2/mods-available/redis.ini \
-    && echo "extension=memcached.so" > /etc/php/8.2/mods-available/memcached.ini \
-    && echo "extension=imagick.so" > /etc/php/8.2/mods-available/imagick.ini \
-    && ln -sf /etc/php/8.2/mods-available/redis.ini /etc/php/8.2/fpm/conf.d/20-redis.ini \
-    && ln -sf /etc/php/8.2/mods-available/redis.ini /etc/php/8.2/cli/conf.d/20-redis.ini \
-    && ln -sf /etc/php/8.2/mods-available/memcached.ini /etc/php/8.2/fpm/conf.d/20-memcached.ini \
-    && ln -sf /etc/php/8.2/mods-available/memcached.ini /etc/php/8.2/cli/conf.d/20-memcached.ini \
-    && ln -sf /etc/php/8.2/mods-available/imagick.ini /etc/php/8.2/fpm/conf.d/20-imagick.ini \
-    && ln -sf /etc/php/8.2/mods-available/imagick.ini /etc/php/8.2/cli/conf.d/20-imagick.ini \
     # Install Composer
     && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
