@@ -13,21 +13,11 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && set -x \
     && apt-get update \
     && apt-get install --no-install-recommends $buildDeps --no-install-suggests -q -y gnupg2 dirmngr wget apt-transport-https lsb-release ca-certificates \
-    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
-    && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -q -y \
     apt-utils \
     python3-pip \
     python-setuptools \
     git \
-    php8.2-fpm \
-    php8.2-cli \
-    php8.2-dev \
-    php8.2-common \
-    php8.2-intl \
-    php8.2-xml \
-    php-pear \
     && mkdir -p /run/php \
     && pip install wheel \
     && pip install supervisor \
@@ -36,21 +26,12 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
 
 RUN echo -n 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6' > /tmp/composer-setup.sig
 
-# RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
-#     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
-#     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
-#     && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} \
-#     && rm -rf /tmp/composer-setup.php /root/.config
-
 RUN rm -rf /tmp/pear \
     && apt-get purge -y --auto-remove $buildDeps \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 80
-
-# Copy required composer files
 COPY supervisord.conf /etc/supervisord.conf
 
 CMD ["/usr/local/bin/supervisord",  "-n", "-c", "/etc/supervisord.conf"]
